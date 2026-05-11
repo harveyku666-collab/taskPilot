@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `context_memories_project_id_unique` ON `context_memories` (`project_id`);
