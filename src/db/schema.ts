@@ -53,6 +53,35 @@ export const requirementsRelations = relations(requirements, ({ one, many }) => 
     references: [projects.id],
   }),
   modules: many(modules),
+  changes: many(requirementChanges),
+}));
+
+// ============================================================
+// Requirement Changes
+// ============================================================
+
+export const requirementChanges = sqliteTable("requirement_changes", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  requirementId: integer("requirement_id")
+    .notNull()
+    .references(() => requirements.id),
+  versionLabel: text("version_label").notNull(),
+  changeSummary: text("change_summary").notNull(),
+  rationale: text("rationale"),
+  status: text("status", {
+    enum: ["draft", "proposed", "approved", "rejected", "implemented"],
+  }).default("draft"),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const requirementChangesRelations = relations(requirementChanges, ({ one, many }) => ({
+  requirement: one(requirements, {
+    fields: [requirementChanges.requirementId],
+    references: [requirements.id],
+  }),
+  impactedModules: many(modules),
+  impactedTasks: many(tasks),
 }));
 
 // ============================================================
@@ -65,6 +94,7 @@ export const modules = sqliteTable("modules", {
     .notNull()
     .references(() => projects.id),
   requirementId: integer("requirement_id").references(() => requirements.id),
+  requirementChangeId: integer("requirement_change_id").references(() => requirementChanges.id),
   name: text("name").notNull(),
   description: text("description"),
   priority: text("priority", {
@@ -82,6 +112,7 @@ export const modules = sqliteTable("modules", {
       "blocked",
     ],
   }).default("not_started"),
+  needsReplanning: integer("needs_replanning", { mode: "boolean" }).default(false),
   sequence: integer("sequence").default(0),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
@@ -96,6 +127,10 @@ export const modulesRelations = relations(modules, ({ one, many }) => ({
     fields: [modules.requirementId],
     references: [requirements.id],
   }),
+  requirementChange: one(requirementChanges, {
+    fields: [modules.requirementChangeId],
+    references: [requirementChanges.id],
+  }),
   tasks: many(tasks),
 }));
 
@@ -108,6 +143,7 @@ export const tasks = sqliteTable("tasks", {
   moduleId: integer("module_id")
     .notNull()
     .references(() => modules.id),
+  requirementChangeId: integer("requirement_change_id").references(() => requirementChanges.id),
   title: text("title").notNull(),
   description: text("description"),
   status: text("status", {
@@ -146,6 +182,7 @@ export const tasks = sqliteTable("tasks", {
   priority: text("priority", {
     enum: ["P0", "P1", "P2", "P3"],
   }).default("P1"),
+  needsReplanning: integer("needs_replanning", { mode: "boolean" }).default(false),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
@@ -154,6 +191,10 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
   module: one(modules, {
     fields: [tasks.moduleId],
     references: [modules.id],
+  }),
+  requirementChange: one(requirementChanges, {
+    fields: [tasks.requirementChangeId],
+    references: [requirementChanges.id],
   }),
 }));
 

@@ -8,6 +8,7 @@ const navItems = [
   { label: "Modules & Tasks", href: "/modules" },
   { label: "Handoffs", href: "/handoffs" },
   { label: "Workspaces", href: "/workspaces" },
+  { label: "Replanning", href: "/replanning" },
 ];
 
 export function Navigation() {

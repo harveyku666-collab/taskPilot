@@ -1,8 +1,8 @@
 # Codex Handoff
 
-Updated: 2026-05-10 18:22:59
+Updated: 2026-05-11 19:02:00
 Project: /Users/work/taskPilot
-Branch: (not a git repository)
+Branch: main
 
 ## Goal
 
@@ -10,25 +10,28 @@ Branch: (not a git repository)
 
 ## Current Status
 
-- Modules through `git-workspaces` are implemented and accepted.
+- All 8 TaskPilot foundation tasks are implemented and accepted.
 - The project now lives at `/Users/work/taskPilot`.
-- Next planned module is `requirement-change-and-replanning`.
+- The repository is initialized and published to `origin/main`.
 
 ## Changed Or Relevant Files
 
+- `/Users/work/taskPilot/src/db/schema.ts`
 - `/Users/work/taskPilot/src/db/seed.ts`
-- `/Users/work/taskPilot/docs/orchestration/project-initiation.md`
+- `/Users/work/taskPilot/src/app/api/requirement-changes/route.ts`
+- `/Users/work/taskPilot/src/app/replanning/page.tsx`
+- `/Users/work/taskPilot/src/components/navigation.tsx`
 - `/Users/work/taskPilot/docs/orchestration/module-task-board.md`
-- `/Users/work/taskPilot/docs/orchestration/handoffs/2026-05-11-qwen-task-007-git-workspaces.md`
+- `/Users/work/taskPilot/docs/orchestration/handoffs/2026-05-11-qwen-task-008-requirement-change-and-replanning.md`
+- `/Users/work/taskPilot/drizzle/0008_real_elektra.sql`
 
 ## Verification
 
 - `npm run lint` — passes in `/Users/work/taskPilot`
 - `npm run build` — passes in `/Users/work/taskPilot`
-- `npm run db:init` — passes and seeds workspace records
-- `curl http://127.0.0.1:3000/api/workspaces` — returns workspace records
-- `curl -X POST http://127.0.0.1:3000/api/workspaces` — creates a workspace record successfully
-- `curl http://127.0.0.1:3000/workspaces` — rendered page shows workspace entries
+- `npm run db:init` — passes and seeds requirement change + replanning linkage records
+- `sqlite3 /Users/work/taskPilot/taskpilot.sqlite ...` — confirms `module2` and `task3` both link to `requirement_changes.id = 1`
+- GitHub publish — `main` pushed to `origin`
 
 ## Blockers
 
@@ -36,12 +39,13 @@ Branch: (not a git repository)
 
 ## Next Steps
 
-- Start planning and dispatch prep for `requirement-change-and-replanning`.
+- No foundation-scope tasks remain.
+- Optional next step: define the next product phase beyond MVP foundation.
 
 ## Git Status Snapshot
 
 ```text
-(not a git repository)
+## main...origin/main
 ```
 
 ## Checkpoint - 2026-05-10 18:23:42
@@ -162,4 +166,16 @@ Git status:
 
 ```text
 (not a git repository)
+```
+
+## Checkpoint - 2026-05-11 19:02:00
+
+Summary: Accepted `requirement-change-and-replanning` after verifying requirement version records, impacted module/task linkage to a concrete change record, the new replanning UI, and fresh lint/build/db:init results. Updated project status to reflect that all 8 foundation tasks are now complete and the repository is published on `origin/main`.
+
+Next: No mandatory foundation work remains. Define the next phase only if product scope is expanding beyond the MVP control-tower baseline.
+
+Git status:
+
+```text
+## main...origin/main
 ```

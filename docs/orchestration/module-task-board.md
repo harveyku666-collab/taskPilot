@@ -174,7 +174,7 @@ Tasks:
 
 - Description: Version requirements and re-scope affected modules and tasks after changes.
 - Priority: P2
-- Status: not_started
+- Status: done
 
 Tasks:
 
@@ -184,7 +184,7 @@ Tasks:
 - Priority: P2
 - Assigned Role: developer
 - Suggested Tool: Qwen
-- Status: ready
+- Status: approved
 - Acceptance Criteria:
   - A requirement change can be recorded without overwriting the original requirement intent
   - At least one lightweight versioning or change-log path exists for requirements
@@ -205,4 +205,5 @@ Tasks:
 - `project-overview-dashboard` is complete and accepted.
 - `handoffs-and-acceptance` is complete and accepted.
 - `git-workspaces` is complete and accepted.
-- Dispatch `requirement-change-and-replanning` next.
+- `requirement-change-and-replanning` is complete and accepted.
+- TaskPilot foundation scope is complete.

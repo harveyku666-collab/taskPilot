@@ -8,7 +8,8 @@
  */
 
 import { db } from "@/lib/db";
-import { projects, requirements, modules, tasks, contextMemories, handoffs, acceptances, workspaces } from "@/db/schema";
+import { projects, requirements, modules, tasks, contextMemories, handoffs, acceptances, workspaces, requirementChanges } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 async function seed() {
   console.log("🌱 Seeding TaskPilot database...");
@@ -66,6 +67,7 @@ async function seed() {
       description: "Move long-lived project memory out of chat context and into durable app state.",
       priority: "P0",
       status: "ready_for_dev",
+      needsReplanning: true,
       sequence: 2,
     })
     .returning();
@@ -107,6 +109,7 @@ async function seed() {
       assignedTool: "Qwen",
       acceptanceCriteria: "Data model exists, minimal UI exists, basic CRUD path exists",
       priority: "P0",
+      needsReplanning: true,
     },
   ];
 
@@ -173,6 +176,25 @@ async function seed() {
 
     console.log(`✅ Created workspace for task ${firstTask[0].title} (id: ${workspace1.id})`);
   }
+
+  // Seed a requirement change record
+  const [change1] = await db
+    .insert(requirementChanges)
+    .values({
+      requirementId: requirement1.id,
+      versionLabel: "v2",
+      changeSummary: "Expanded scope to include Git worktree management and structured handoff tracking.",
+      rationale: "Multi-AI delivery requires isolated workspaces and clear handoff evidence for acceptance.",
+      status: "approved",
+    })
+    .returning();
+
+  console.log(`✅ Created requirement change for ${requirement1.title} (id: ${change1.id})`);
+
+  // Link impacted items to the change
+  await db.update(modules).set({ requirementChangeId: change1.id }).where(eq(modules.id, module2.id));
+  await db.update(tasks).set({ requirementChangeId: change1.id }).where(eq(tasks.moduleId, module2.id));
+  console.log(`✅ Linked impacted module and task to change v2`);
 
   console.log("\n✨ Seeding complete!");
 }

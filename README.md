@@ -40,6 +40,7 @@ src/
 │   ├── modules/      # Modules & Tasks page (database-driven)
 │   ├── handoffs/     # Handoffs & Acceptance page
 │   ├── workspaces/   # Git Workspaces page
+│   ├── replanning/   # Requirement Changes & Replanning page
 │   └── api/          # API routes
 │       ├── context-memory/  # Context memory CRUD
 │       ├── requirements/    # Requirements CRUD
@@ -47,7 +48,8 @@ src/
 │       ├── tasks/           # Tasks CRUD
 │       ├── handoffs/        # Handoffs CRUD
 │       ├── acceptances/     # Acceptances CRUD
-│       └── workspaces/      # Workspaces CRUD
+│       ├── workspaces/      # Workspaces CRUD
+│       └── requirement-changes/ # Requirement changes CRUD
 ├── components/       # Shared UI components (Layout, Navigation, ContextMemoryCard)
 ├── lib/              # Utility modules
 │   └── db.ts         # Drizzle database instance
@@ -94,8 +96,9 @@ npm run db:studio
 
 - **projects** — Project identity, root path, git repo, status, phase
 - **requirements** — Requirements tied to a project (title, description, status, priority)
-- **modules** — Modules grouped under projects and requirements, priority, status, sequence
-- **tasks** — Tasks grouped under modules, status, stage, assigned role/tool
+- **requirement_changes** — Requirement versioning/change-log (requirementId, versionLabel, changeSummary, rationale, status)
+- **modules** — Modules grouped under projects and requirements, priority, status, sequence, needsReplanning flag
+- **tasks** — Tasks grouped under modules, status, stage, assigned role/tool, needsReplanning flag
 - **context_memories** — Durable project context memory (summary, currentStatus, blockers, nextStep), tied to a project
 - **handoffs** — Task handoffs between roles (taskId, fromRole, toRole, summary, status)
 - **acceptances** — Acceptance decisions for handoffs (handoffId, taskId, decision, notes, reviewerRole)
@@ -126,27 +129,28 @@ View and edit the latest context memory on the **Overview** page, or via the API
 
 ## Current Status
 
-**Version:** 0.1.0 — Git Workspaces
+**Version:** 0.1.0 — Requirement Change And Replanning
 
 The application foundation is ready with:
 - ✅ Next.js + React + Tailwind CSS setup
 - ✅ Shared layout with navigation
-- ✅ Landing page with Overview, Modules & Tasks, Handoffs, and Workspaces links
+- ✅ Landing page with Overview, Modules & Tasks, Handoffs, Workspaces, and Replanning links
 - ✅ Overview dashboard with real database-driven data
 - ✅ SQLite and Drizzle ORM dependencies installed
-- ✅ First-pass schema: projects, requirements, modules, tasks, handoffs, acceptances, workspaces
+- ✅ First-pass schema: projects, requirements, requirement_changes, modules, tasks, handoffs, acceptances, workspaces
 - ✅ Migration generation path (`npm run db:generate`)
 - ✅ Lightweight seed script (`npm run db:seed`)
 - ✅ Context memory table with summary, currentStatus, blockers, nextStep
 - ✅ Overview page shows latest context memory per project
-- ✅ API routes for requirements, modules, tasks, context memory, handoffs, acceptances, workspaces
+- ✅ API routes for requirements, modules, tasks, context memory, handoffs, acceptances, workspaces, requirement-changes
 - ✅ Modules & Tasks page displays real database-driven data
 - ✅ Requirement data model tied to projects
 - ✅ Overview dashboard: real counts, progress summaries, pending actions, recent activity
 - ✅ Handoffs & Acceptance page with minimal UI for viewing records
 - ✅ Git Workspaces page with branch and worktree tracking
+- ✅ Requirement Changes & Replanning page with versioning and impacted items tracking
 - ✅ Lightweight create paths for all entities via API
 
 ## Upcoming Tasks
 
-- Requirement change and replanning
+- None currently planned
